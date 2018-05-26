@@ -11,4 +11,14 @@
     <string name="ccalWalk">ккал</string>
     <string name="steps">Шагов</string>
     <string name="stepsAll">Всего</string>
+
+    <string-array name="sex">
+        <item>Мужчина</item>
+        <item>Женщина</item>
+    </string-array>
+    <string-array name="sex_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
 </resources>

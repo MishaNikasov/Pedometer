@@ -12,7 +12,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -92,16 +96,11 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSettings = getContext().getSharedPreferences(APP_PROFILE_SETTINGS, Context.MODE_PRIVATE);
+        mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        if (!mSettings.contains(APP_PROFILE_GOAL)){
-            mGoal = 4000;
-        }
-        else
-            mGoal = mSettings.getInt(APP_PROFILE_GOAL, 0);
-
-        mWeight = mSettings.getInt(APP_PROFILE_WEIGHT, 0);
-        mGrowth = mSettings.getInt(APP_PROFILE_GROWTH, 0);
+        mGoal = Integer.valueOf(mSettings.getString("editGoal", ""));
+        mWeight = Integer.valueOf(mSettings.getString("editWeight", ""));
+        mGrowth = Integer.valueOf(mSettings.getString("editGrowth", ""));
 
         stepLenth = (mGrowth/100/4)+0.37;
 
@@ -111,8 +110,6 @@ public class StepsFragment extends Fragment implements SensorEventListener{
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -127,25 +124,22 @@ public class StepsFragment extends Fragment implements SensorEventListener{
         sensorManager = (SensorManager) getContext().getSystemService(getContext().SENSOR_SERVICE);
 
         stepGoal.setText("Цель: " + mGoal);
-//
-//        Date date = new Date();
-//        SimpleDateFormat sdf1 = new SimpleDateFormat("dd");
-//        String dateString1 = sdf1.format(date);
-//
-//        String dataa = "";
-//
-//        if (mSettings.contains(APP_CURRENT_DATE)) {
-//            dataa = mSettings.getString(APP_CURRENT_DATE, "");
-//        }
-//
-//        if (Integer.getInteger(dateString1)>Integer.getInteger(dataa)){
-//            SharedPreferences.Editor editor = mSettings.edit();
-//            editor.putString(APP_CURRENT_DATE, dateString1);
-//            editor.apply();
-//
-//
-//            stepsCountValue = 0;
-//        }
+
+        stepsCount.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector =
+                    new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                        @Override
+                        public boolean onDoubleTap(MotionEvent e) {
+                            Log.d("TEST", "onDoubleTap");
+                            return super.onDoubleTap(e);
+                        }
+                    });
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
 
         return view;
     }
@@ -154,12 +148,16 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     public void onResume() {
         super.onResume();
 
-        mWeight = mSettings.getInt(APP_PROFILE_WEIGHT, 0);
-        mGrowth = mSettings.getInt(APP_PROFILE_GROWTH, 0);
-        stepLenth = (mGrowth/100.0/4.0)+0.37;
-        mGoal = mSettings.getInt(APP_PROFILE_GOAL, 0);
-        stepGoal.setText("Цель: " + mGoal);
         running = true;
+
+        mGoal = Integer.valueOf(mSettings.getString("editGoal", ""));
+        mWeight = Integer.valueOf(mSettings.getString("editWeight", ""));
+        mGrowth = Integer.valueOf(mSettings.getString("editGrowth", ""));
+
+        stepLenth = (mGrowth/100.0/4.0)+0.37;
+
+        stepGoal.setText("Цель: " + mGoal);
+
         Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
         if (countSensor!=null){

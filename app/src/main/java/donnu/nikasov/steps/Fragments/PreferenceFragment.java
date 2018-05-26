@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import donnu.nikasov.steps.R;
 
@@ -36,7 +38,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSettings = getContext().getSharedPreferences(APP_PROFILE_SETTINGS, Context.MODE_PRIVATE);
+        mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        String a = mSettings.getString("editSex","");
+
+        Toast.makeText(getContext(), a, Toast.LENGTH_SHORT).show();
     }
 
     @Override

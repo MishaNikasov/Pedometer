@@ -9,14 +9,25 @@
 
         <EditTextPreference
             android:key="editGrowth"
-            android:summary="Growth"
-            android:text="180"
+            android:defaultValue="170"
+            android:summary="Укажите ваш рост"
             android:title="Рост"/>
+        <EditTextPreference
+            android:defaultValue="1000"
+            android:key="editGoal"
+            android:title="Цель"/>
+        <EditTextPreference
+            android:defaultValue="70"
+            android:key="editWeight"
+            android:title="Вес"/>
 
-        <donnu.nikasov.steps.NumberPickerPreference
-            android:key="pref_theme"
-            android:title="Theme">
-        </donnu.nikasov.steps.NumberPickerPreference>
-
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/sex"
+            android:entryValues="@array/sex_values"
+            android:key="editSex"
+            android:title="Пол"
+            android:summary="Укажите ваш пол"
+            />
     </PreferenceCategory>
 </PreferenceScreen>
