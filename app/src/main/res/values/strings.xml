@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Steps</string>
+    <string name="title_home">Шаги</string>
+    <string name="title_dashboard">Статистика</string>
+    <string name="title_notifications">Настройки</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="walkTime">Время Ходьбы</string>
+    <string name="walkDistance">км</string>
+    <string name="ccalWalk">ккал</string>
+    <string name="steps">Шагов</string>
+    <string name="stepsAll">Всего</string>
+</resources>

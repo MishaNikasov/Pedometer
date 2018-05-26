@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/contentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_margin="24dp"
+        android:gravity="center_vertical"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/stepStatistic"
+            android:textSize="26sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500" />
+
+        <TextView
+            android:id="@+id/stepDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20 мая"
+            android:textSize="@dimen/textSizeCountersStoryFragment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSizeCountersStory"
+                android:id="@+id/stepDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+            <TextView
+                android:textSize="@dimen/textSizeCountersStoryFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="км"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSizeCountersStory"
+                android:id="@+id/stepCal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:textSize="@dimen/textSizeCountersStoryFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ккал"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSizeCountersStory"
+                android:id="@+id/stepTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:textSize="@dimen/textSizeCountersStoryFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="в пути"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

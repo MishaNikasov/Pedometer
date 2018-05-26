@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Личная информация"
+        android:key="profile_info">
+
+        <EditTextPreference
+            android:key="editGrowth"
+            android:summary="Growth"
+            android:text="180"
+            android:title="Рост"/>
+
+        <donnu.nikasov.steps.NumberPickerPreference
+            android:key="pref_theme"
+            android:title="Theme">
+        </donnu.nikasov.steps.NumberPickerPreference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

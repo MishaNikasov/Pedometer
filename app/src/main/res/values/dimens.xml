@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="paddingStepFragment">18dp</dimen>
+    <dimen name="paddingStepStoryFragment">7dp</dimen>
+    <dimen name="textSizeCountersFragment">21sp</dimen>
+    <dimen name="textSizeCountersStory">15sp</dimen>
+    <dimen name="textSizeCountersTextFragment">13sp</dimen>
+    <dimen name="textSizeCountersStoryFragment">12sp</dimen>
+</resources>
