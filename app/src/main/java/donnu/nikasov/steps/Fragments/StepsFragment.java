@@ -22,17 +22,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import donnu.nikasov.steps.Data.DayStepsIdentity;
 import donnu.nikasov.steps.R;
-
-import static donnu.nikasov.steps.MainActivity.APP_CURRENT_DATE;
-import static donnu.nikasov.steps.MainActivity.APP_PROFILE_GOAL;
-import static donnu.nikasov.steps.MainActivity.APP_PROFILE_GROWTH;
-import static donnu.nikasov.steps.MainActivity.APP_PROFILE_SETTINGS;
-import static donnu.nikasov.steps.MainActivity.APP_PROFILE_WEIGHT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +43,7 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    Sensor countSensor;
     private SensorManager sensorManager;
     private TextView calCount;
     private TextView stepsCount;
@@ -60,7 +53,7 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     private boolean running = false;
 
     private double calCountValue;
-    private double stepsCountValue;
+    private float stepsCountValue ;
     private double timeCountValue;
     private double meterCountValue;
 
@@ -77,6 +70,7 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     private String dateString;
 
     private SharedPreferences mSettings;
+    private SharedPreferences mSettings1;
 
     public StepsFragment() {
         // Required empty public constructor
@@ -97,6 +91,12 @@ public class StepsFragment extends Fragment implements SensorEventListener{
         super.onCreate(savedInstanceState);
 
         mSettings = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mSettings1 = getContext().getSharedPreferences("appData", Context.MODE_PRIVATE);
+
+//        if ( mSettings1.getFloat("stepCounter", 0)){
+//
+//        }
+        stepsCountValue = mSettings1.getFloat("stepCounter", 0);
 
         mGoal = Integer.valueOf(mSettings.getString("editGoal", ""));
         mWeight = Integer.valueOf(mSettings.getString("editWeight", ""));
@@ -131,6 +131,27 @@ public class StepsFragment extends Fragment implements SensorEventListener{
                         @Override
                         public boolean onDoubleTap(MotionEvent e) {
                             Log.d("TEST", "onDoubleTap");
+
+                            DayStepsIdentity dayStepsIdentity = new DayStepsIdentity(calCountValue,
+                                    stepsCountValue, timeCountValue ,meterCountValue , dateString, stepGoalBool);
+                            dayStepsIdentity.save();
+                            return super.onDoubleTap(e);
+                        }
+                    });
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+
+        timeCount.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector =
+                    new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                        @Override
+                        public boolean onDoubleTap(MotionEvent e) {
+                            Log.d("TEST", "onDoubleTap");
+                            stepsCountValue = 1;
                             return super.onDoubleTap(e);
                         }
                     });
@@ -150,6 +171,8 @@ public class StepsFragment extends Fragment implements SensorEventListener{
 
         running = true;
 
+        stepsCountValue = mSettings1.getFloat("stepCounter", 0);
+
         mGoal = Integer.valueOf(mSettings.getString("editGoal", ""));
         mWeight = Integer.valueOf(mSettings.getString("editWeight", ""));
         mGrowth = Integer.valueOf(mSettings.getString("editGrowth", ""));
@@ -158,7 +181,7 @@ public class StepsFragment extends Fragment implements SensorEventListener{
 
         stepGoal.setText("Цель: " + mGoal);
 
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
         if (countSensor!=null){
             sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
@@ -171,6 +194,7 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     @Override
     public void onPause() {
         super.onPause();
+        mSettings1.edit().putFloat("stepCounter", stepsCountValue).apply();
 //        running = false;
     }
 
@@ -199,40 +223,37 @@ public class StepsFragment extends Fragment implements SensorEventListener{
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSensorChanged(SensorEvent event) {
+//            float value = event.values[0];
+        stepsCountValue += 1;
 
-        if (running){
-            stepsCountValue = event.values[0];
-            meterCountValue = (event.values[0])*stepLenth/1000;
-            timeCountValue = meterCountValue/5*60*60;
-            calCountValue = meterCountValue*0.5*mWeight;
+        stepsCountValueFormat = String.format("%.0f", stepsCountValue);
 
-            Double d = new Double(timeCountValue);
-            int i = d.intValue();
+        meterCountValue = (stepsCountValue)*stepLenth/1000;
+        timeCountValue = meterCountValue/5*60*60;
+        calCountValue = meterCountValue*0.45*mWeight;
 
-            stepsCountValueFormat = String.format("%.0f", stepsCountValue);
-            meterCountValueFormat = String.format("%.2f", meterCountValue);
-            timeCountValueFormat = timeConversion(i);
-            calCountValueFormat = String.format("%.1f", calCountValue);
+        Double d = new Double(timeCountValue);
+        int i = d.intValue();
 
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+        meterCountValueFormat = String.format("%.2f", meterCountValue);
+        timeCountValueFormat = timeConversion(i);
+        calCountValueFormat = String.format("%.1f", calCountValue);
 
-            dateString = sdf.format(date);
-            stepsCount.setText(stepsCountValueFormat);
-            meterCount.setText(meterCountValueFormat);
-            timeCount.setText(timeCountValueFormat);
-            calCount.setText(calCountValueFormat);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
 
-            if (stepsCountValue>=mGoal){
-                stepGoalBool = true;
-                Toast.makeText(getContext(), "NIICCEEE", Toast.LENGTH_SHORT).show();
-            }
+        dateString = sdf.format(date);
+        stepsCount.setText(stepsCountValueFormat);
+        meterCount.setText(meterCountValueFormat);
+        timeCount.setText(timeCountValueFormat);
+        calCount.setText(calCountValueFormat);
 
-            DayStepsIdentity dayStepsIdentity = new DayStepsIdentity(calCountValue,
-                    stepsCountValue, timeCountValue ,meterCountValue , dateString, stepGoalBool);
-
-            dayStepsIdentity.save();
+        if (stepsCountValue==mGoal){
+            stepGoalBool = true;
+            Toast.makeText(getContext(), "NIICCEEE", Toast.LENGTH_SHORT).show();
         }
+
+        mSettings1.edit().putFloat("stepCounter", stepsCountValue).apply();
     }
 
     public static String timeConversion(int totalSeconds) {

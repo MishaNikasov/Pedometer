@@ -1,8 +1,6 @@
 package donnu.nikasov.steps;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,21 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.view.MenuItem;
 
-import java.util.Date;
-
 import donnu.nikasov.steps.Fragments.PreferenceFragment;
 import donnu.nikasov.steps.Fragments.StatisticsFragment;
 import donnu.nikasov.steps.Fragments.StepsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String APP_PROFILE_SETTINGS = "profileSettings";
-    public static final String APP_PROFILE_WEIGHT = "profileWeight";
-    public static final String APP_PROFILE_GROWTH = "profileGrowth";
-    public static final String APP_PROFILE_GOAL = "profileGoal";
-    public static final String APP_CURRENT_DATE = "currentDate";
-
-    private SharedPreferences mSettings;
+    public static final String APP_DATA = "appData";
+    public static final String APP_STEP_COUNTER = "stepCounter";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
